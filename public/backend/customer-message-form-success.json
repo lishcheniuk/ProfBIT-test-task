@@ -1,0 +1,47 @@
+{
+    "status": 200,
+    "form": [
+        {
+            "attrs": {
+                "required": true,
+                "placeholder": "Введите Ваше ФИО"
+            },
+            "label": "ФИО",
+            "name": "first_name",
+            "type": "text"
+        },
+        {
+            "attrs": {
+                "required": true,
+                "placeholder": "Введите Ваш e-mail"
+            },
+            "label": "E-mail",
+            "name": "email",
+            "type": "email"
+        },
+        {
+            "attrs": {
+                "required": true,
+                "placeholder": "Выберите тип вопроса"
+            },
+            "label": "Тип вопроса",
+            "name": "type",
+            "type": "select",
+            "options": [
+                { "order": "Вопрос по заказу" },
+                { "return": "Вопрос по возврату" },
+                { "cooperation": "Вопрос по сотрудничеству" }
+            ]
+        },
+        {
+            "attrs": {
+                "required": true,
+                "placeholder": "Ваше сообщение нам"
+            },
+            "label": "Сообщение",
+            "name": "message",
+            "type": "textarea"
+        }
+    ],
+    "message": "Ваше сообщение принято, мы свяжемся с Вами в ближайшее время."
+}
