@@ -30,33 +30,34 @@ function App() {
     }
 
     async function submitForm(formValue, typeSend) {
-        console.log(formValue);
-        let messagePayload = null;
+        let data = null;
         try {
             if (typeSend === 'error') {
-                const data = await API.sendQuestionError();
-                messagePayload = {
-                    text: data.message || 'Ошибка! Что-то пошло не так',
-                    type: 'error',
-                };
+                data = await API.sendQuestionError();
             } else {
-                const data = await API.sendQuestionSuccess();
-                messagePayload = {
-                    text: data.message || 'Успешный запрос',
-                    type: 'success',
-                };
-
+                data = await API.sendQuestionSuccess();
                 setIsShowModal(false);
             }
-            setMessage(messagePayload);
+
+            const errors = data.form
+                .filter((item) => !!item.errors)
+                .map((item) => item.errors)
+                .flat();
+
+            if (!errors.length) {
+                setMessage({
+                    text: data.message || 'Успешный запрос',
+                    type: 'success',
+                });
+            }
+
+            return { status: data.status, errors };
         } catch (error) {
-            messagePayload = {
+            setMessage({
                 text: error,
                 type: 'error',
-            };
-            setMessage(messagePayload);
-        } finally {
-            return messagePayload.type === 'success';
+            });
+            return { status: 400 };
         }
     }
 

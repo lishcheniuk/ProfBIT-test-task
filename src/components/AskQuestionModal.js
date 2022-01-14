@@ -3,6 +3,7 @@ import { CSSTransition } from 'react-transition-group';
 
 export function AskQuestionModal({ dataForm, isShow, close, submit }) {
     const [formValue, setFormValue] = useState({});
+    const [errors, setErrors] = useState(null);
     const nodeRef = useRef(null);
     const formRef = useRef();
 
@@ -22,8 +23,14 @@ export function AskQuestionModal({ dataForm, isShow, close, submit }) {
     async function submitHandler(e, typeSend) {
         e.preventDefault();
         if (validForm()) return false;
-        const statusOk = await submit(formValue, typeSend);
-        if (statusOk) setFormValue({});
+
+        const answer = await submit(formValue, typeSend);
+        if (answer.status === 200) {
+            setFormValue({});
+            setErrors(null);
+        } else if (answer.errors.length) {
+            setErrors(answer.errors);
+        }
     }
 
     return (
@@ -138,6 +145,14 @@ export function AskQuestionModal({ dataForm, isShow, close, submit }) {
                                         </div>
                                     );
                                 })}
+
+                                {errors && (
+                                    <ul className='form__errors'>
+                                        {errors.map((error, index) => {
+                                            return <li key={index}>{error}</li>;
+                                        })}
+                                    </ul>
+                                )}
                             </div>
 
                             <div className='form__footer'>
