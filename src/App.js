@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { AskQuestionModal } from './components/AskQuestionModal';
 import { API } from './services/api';
 import { Alert } from './components/Alert';
+import { ERROR, SUCCESS } from './CONSTS';
 
 function App() {
     const [isShowModal, setIsShowModal] = useState(false);
@@ -32,32 +33,29 @@ function App() {
     async function submitForm(formValue, typeSend) {
         let data = null;
         try {
-            if (typeSend === 'error') {
+            if (typeSend === ERROR) {
                 data = await API.sendQuestionError();
             } else {
                 data = await API.sendQuestionSuccess();
+            }
+
+            if (data.status === 200) {
                 setIsShowModal(false);
             }
 
-            const errors = data.form
-                .filter((item) => !!item.errors)
-                .map((item) => item.errors)
-                .flat();
-
-            if (!errors.length) {
+            if (data.message) {
                 setMessage({
-                    text: data.message || 'Успешный запрос',
-                    type: 'success',
+                    text: data.message,
+                    type: data.status === 200 ? SUCCESS : ERROR,
                 });
             }
-
-            return { status: data.status, errors };
+            return data.form;
         } catch (error) {
             setMessage({
                 text: error,
-                type: 'error',
+                type: ERROR,
             });
-            return { status: 400 };
+            return false;
         }
     }
 

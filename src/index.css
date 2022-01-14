@@ -15,6 +15,10 @@ body {
     background-color: rgb(247, 236, 216);
 }
 
+ul {
+    list-style-type: none;
+}
+
 .App {
     min-height: 100vh;
     padding: 10px;
@@ -71,6 +75,11 @@ body {
     position: relative;
 }
 
+.form__valid-message {
+    color: red;
+    font-size: 12px;
+}
+
 .form__input,
 .form__textarea {
     border: 1px solid var(--color_grey);
@@ -81,8 +90,8 @@ body {
     width: 100%;
 }
 
-.form__input:focus + .form__input-placeholder,
-.form__input:valid + .form__input-placeholder {
+.form__input-placeholder.form__input-placeholder--valid,
+.form__input:focus + .form__input-placeholder {
     transform: translateY(-120%);
     font-size: 12px;
 }
@@ -128,17 +137,18 @@ body {
 
 .modal-enter {
     opacity: 0;
+    margin-top: -100px;
 }
 .modal-enter-active {
     opacity: 1;
-    transition: opacity 0.5s;
+    margin-top: 0;
+    transition: all 0.5s;
 }
-.modal-exit {
-    opacity: 1;
-}
+
 .modal-exit-active {
     opacity: 0;
-    transition: opacity 0.5s;
+    margin-top: -100px;
+    transition: all 0.5s;
 }
 
 .alert {
